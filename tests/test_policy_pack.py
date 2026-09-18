@@ -1,3 +1,4 @@
+import copy
 import importlib.util
 from pathlib import Path
 import unittest
@@ -28,6 +29,20 @@ class PolicyPackTests(unittest.TestCase):
         pack = validator.load_json(ROOT / "policies" / "conditional-access-pack.json")
         states = {policy["state"] for policy in pack["policies"]}
         self.assertEqual({"reportOnly"}, states)
+
+    def test_unknown_included_user_is_rejected(self):
+        pack = copy.deepcopy(validator.load_json(ROOT / "policies" / "conditional-access-pack.json"))
+        policy = pack["policies"][0]
+        policy["includedUsers"] = ["usr-does-not-exist"]
+        errors = validator.validate(pack)
+        self.assertIn(f"{policy['id']}: unknown user usr-does-not-exist", errors)
+
+    def test_known_and_all_users_are_accepted(self):
+        pack = copy.deepcopy(validator.load_json(ROOT / "policies" / "conditional-access-pack.json"))
+        policy = pack["policies"][0]
+        policy["includedUsers"] = ["all"]
+        policy["excludedUsers"] = ["usr-breakglass-01"]
+        self.assertEqual([], validator.validate(pack))
 
 
 if __name__ == "__main__":
