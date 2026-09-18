@@ -1,0 +1,27 @@
+[
+  {
+    "id": "grp-break-glass",
+    "displayName": "Emergency Access Accounts",
+    "purpose": "Cloud-only emergency access accounts excluded from Conditional Access enforcement"
+  },
+  {
+    "id": "grp-security-admins",
+    "displayName": "Security Administrators",
+    "purpose": "Privileged security operations administrators"
+  },
+  {
+    "id": "grp-all-staff",
+    "displayName": "All Staff",
+    "purpose": "Baseline workforce users"
+  },
+  {
+    "id": "grp-finance-users",
+    "displayName": "Finance Users",
+    "purpose": "Users with access to finance applications"
+  },
+  {
+    "id": "grp-guest-users",
+    "displayName": "Guest Users",
+    "purpose": "External collaboration users"
+  }
+]

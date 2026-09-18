@@ -1,0 +1,164 @@
+{
+  "metadata": {
+    "schemaVersion": "1.0",
+    "environment": "synthetic-lab",
+    "owner": "security-operations",
+    "lastReviewed": "2026-09-18"
+  },
+  "policies": [
+    {
+      "id": "CA-001",
+      "displayName": "Admin MFA and compliant device",
+      "state": "reportOnly",
+      "owner": "identity-security",
+      "intent": "Require stronger authentication and a compliant device for privileged administration.",
+      "includedGroups": ["grp-security-admins"],
+      "excludedGroups": ["grp-break-glass"],
+      "includedApplications": ["app-admin-portals"],
+      "excludedApplications": [],
+      "conditions": {
+        "clientAppTypes": ["browser", "mobileAppsAndDesktopClients"],
+        "locations": {"include": ["all"], "exclude": ["loc-trusted-office"]},
+        "signInRiskLevels": [],
+        "userRiskLevels": [],
+        "platforms": ["all"]
+      },
+      "grantControls": ["mfa", "compliantDevice"],
+      "sessionControls": [],
+      "rollback": "Disable CA-001 and review privileged sign-in logs for blocked administration paths.",
+      "reviewCadence": "monthly"
+    },
+    {
+      "id": "CA-002",
+      "displayName": "Block legacy authentication",
+      "state": "reportOnly",
+      "owner": "identity-security",
+      "intent": "Block legacy clients that cannot complete modern authentication.",
+      "includedGroups": ["grp-all-staff", "grp-security-admins", "grp-finance-users", "grp-guest-users"],
+      "excludedGroups": ["grp-break-glass"],
+      "includedApplications": ["all"],
+      "excludedApplications": [],
+      "conditions": {
+        "clientAppTypes": ["exchangeActiveSync", "other"],
+        "locations": {"include": ["all"], "exclude": []},
+        "signInRiskLevels": [],
+        "userRiskLevels": [],
+        "platforms": ["all"]
+      },
+      "grantControls": ["block"],
+      "sessionControls": [],
+      "rollback": "Return CA-002 to report-only while affected mail clients are remediated.",
+      "reviewCadence": "monthly"
+    },
+    {
+      "id": "CA-003",
+      "displayName": "MFA for risky sign-ins",
+      "state": "reportOnly",
+      "owner": "security-operations",
+      "intent": "Require MFA when sign-in risk is medium or high.",
+      "includedGroups": ["grp-all-staff", "grp-security-admins", "grp-finance-users"],
+      "excludedGroups": ["grp-break-glass"],
+      "includedApplications": ["app-m365-core", "app-admin-portals", "app-finance-erp"],
+      "excludedApplications": [],
+      "conditions": {
+        "clientAppTypes": ["browser", "mobileAppsAndDesktopClients"],
+        "locations": {"include": ["all"], "exclude": []},
+        "signInRiskLevels": ["medium", "high"],
+        "userRiskLevels": [],
+        "platforms": ["all"]
+      },
+      "grantControls": ["mfa"],
+      "sessionControls": [],
+      "rollback": "Disable CA-003 if risk signals cause a confirmed access outage.",
+      "reviewCadence": "weekly"
+    },
+    {
+      "id": "CA-004",
+      "displayName": "Guest access session controls",
+      "state": "reportOnly",
+      "owner": "collaboration-security",
+      "intent": "Apply shorter sessions to guest collaboration access.",
+      "includedGroups": ["grp-guest-users"],
+      "excludedGroups": ["grp-break-glass"],
+      "includedApplications": ["app-collab-guest"],
+      "excludedApplications": [],
+      "conditions": {
+        "clientAppTypes": ["browser"],
+        "locations": {"include": ["all"], "exclude": []},
+        "signInRiskLevels": [],
+        "userRiskLevels": [],
+        "platforms": ["all"]
+      },
+      "grantControls": ["mfa"],
+      "sessionControls": [{"type": "signInFrequency", "value": "8 hours"}],
+      "rollback": "Return guest sessions to the prior tenant default after collaboration owner approval.",
+      "reviewCadence": "quarterly"
+    },
+    {
+      "id": "CA-005",
+      "displayName": "Unmanaged device browser restriction",
+      "state": "reportOnly",
+      "owner": "endpoint-security",
+      "intent": "Limit browser sessions from devices that are not compliant or hybrid joined.",
+      "includedGroups": ["grp-all-staff", "grp-finance-users"],
+      "excludedGroups": ["grp-break-glass"],
+      "includedApplications": ["app-m365-core", "app-finance-erp"],
+      "excludedApplications": [],
+      "conditions": {
+        "clientAppTypes": ["browser"],
+        "locations": {"include": ["all"], "exclude": ["loc-trusted-office", "loc-vpn-egress"]},
+        "signInRiskLevels": [],
+        "userRiskLevels": [],
+        "platforms": ["all"]
+      },
+      "grantControls": ["approvedClientApp"],
+      "sessionControls": [{"type": "appEnforcedRestrictions", "value": "enabled"}],
+      "rollback": "Disable CA-005 if browser-only access blocks an approved business process.",
+      "reviewCadence": "monthly"
+    },
+    {
+      "id": "CA-006",
+      "displayName": "Finance app location guardrail",
+      "state": "reportOnly",
+      "owner": "finance-systems",
+      "intent": "Require MFA and trusted network context for finance app access.",
+      "includedGroups": ["grp-finance-users"],
+      "excludedGroups": ["grp-break-glass"],
+      "includedApplications": ["app-finance-erp"],
+      "excludedApplications": [],
+      "conditions": {
+        "clientAppTypes": ["browser", "mobileAppsAndDesktopClients"],
+        "locations": {"include": ["all"], "exclude": ["loc-trusted-office", "loc-vpn-egress"]},
+        "signInRiskLevels": [],
+        "userRiskLevels": [],
+        "platforms": ["all"]
+      },
+      "grantControls": ["mfa"],
+      "sessionControls": [],
+      "rollback": "Return CA-006 to report-only and confirm whether the user is on an approved network path.",
+      "reviewCadence": "monthly"
+    },
+    {
+      "id": "CA-007",
+      "displayName": "Baseline user MFA rollout",
+      "state": "reportOnly",
+      "owner": "identity-security",
+      "intent": "Stage MFA for the general workforce without touching emergency access accounts.",
+      "includedGroups": ["grp-all-staff"],
+      "excludedGroups": ["grp-break-glass"],
+      "includedApplications": ["app-m365-core"],
+      "excludedApplications": [],
+      "conditions": {
+        "clientAppTypes": ["browser", "mobileAppsAndDesktopClients"],
+        "locations": {"include": ["all"], "exclude": ["loc-trusted-office"]},
+        "signInRiskLevels": [],
+        "userRiskLevels": [],
+        "platforms": ["all"]
+      },
+      "grantControls": ["mfa"],
+      "sessionControls": [],
+      "rollback": "Pause the rollout by disabling CA-007, then review helpdesk tickets and sign-in logs.",
+      "reviewCadence": "weekly"
+    }
+  ]
+}

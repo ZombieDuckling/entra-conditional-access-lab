@@ -1,0 +1,20 @@
+[
+  {
+    "id": "loc-trusted-office",
+    "displayName": "Trusted office networks",
+    "type": "ipNamedLocation",
+    "sampleRanges": ["198.51.100.0/24"]
+  },
+  {
+    "id": "loc-high-risk-country-sample",
+    "displayName": "High risk country sample",
+    "type": "countryNamedLocation",
+    "countries": ["ZZ"]
+  },
+  {
+    "id": "loc-vpn-egress",
+    "displayName": "Corporate VPN egress",
+    "type": "ipNamedLocation",
+    "sampleRanges": ["203.0.113.0/24"]
+  }
+]

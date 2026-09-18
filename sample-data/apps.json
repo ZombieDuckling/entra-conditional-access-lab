@@ -1,0 +1,22 @@
+[
+  {
+    "id": "app-m365-core",
+    "displayName": "Microsoft 365 core apps",
+    "category": "productivity"
+  },
+  {
+    "id": "app-admin-portals",
+    "displayName": "Microsoft administration portals",
+    "category": "administration"
+  },
+  {
+    "id": "app-finance-erp",
+    "displayName": "Finance ERP sample app",
+    "category": "finance"
+  },
+  {
+    "id": "app-collab-guest",
+    "displayName": "External collaboration sample app",
+    "category": "collaboration"
+  }
+]

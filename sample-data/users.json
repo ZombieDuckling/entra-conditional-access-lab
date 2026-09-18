@@ -1,0 +1,32 @@
+[
+  {
+    "id": "usr-breakglass-01",
+    "displayName": "Emergency Access One",
+    "type": "breakGlass",
+    "groups": ["grp-break-glass"]
+  },
+  {
+    "id": "usr-security-admin-01",
+    "displayName": "Security Admin Sample",
+    "type": "member",
+    "groups": ["grp-security-admins", "grp-all-staff"]
+  },
+  {
+    "id": "usr-finance-01",
+    "displayName": "Finance User Sample",
+    "type": "member",
+    "groups": ["grp-finance-users", "grp-all-staff"]
+  },
+  {
+    "id": "usr-staff-01",
+    "displayName": "Staff User Sample",
+    "type": "member",
+    "groups": ["grp-all-staff"]
+  },
+  {
+    "id": "usr-guest-01",
+    "displayName": "Guest User Sample",
+    "type": "guest",
+    "groups": ["grp-guest-users"]
+  }
+]

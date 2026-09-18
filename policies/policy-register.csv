@@ -1,0 +1,8 @@
+policy_id,display_name,owner,state,primary_risk,expected_user_impact,rollback_owner
+CA-001,Admin MFA and compliant device,identity-security,reportOnly,Privileged access compromise,Administrators may need MFA and compliant endpoint,identity-security
+CA-002,Block legacy authentication,identity-security,reportOnly,Credential replay through legacy protocols,Older clients may stop connecting after enforcement,identity-security
+CA-003,MFA for risky sign-ins,security-operations,reportOnly,Risky sign-in completion without challenge,Users with risky sign-ins may need MFA,security-operations
+CA-004,Guest access session controls,collaboration-security,reportOnly,Long-lived guest sessions,Guests may sign in more often,collaboration-security
+CA-005,Unmanaged device browser restriction,endpoint-security,reportOnly,Data access from unmanaged devices,Browser access may be limited on unmanaged devices,endpoint-security
+CA-006,Finance app location guardrail,finance-systems,reportOnly,Finance access from untrusted paths,Finance users may need VPN or trusted network path,finance-systems
+CA-007,Baseline user MFA rollout,identity-security,reportOnly,Workforce account takeover,Staff may need MFA registration and challenge,identity-security
