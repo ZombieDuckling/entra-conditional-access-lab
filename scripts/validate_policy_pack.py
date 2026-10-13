@@ -23,10 +23,12 @@ def load_ids(path: Path) -> set[str]:
     return {item["id"] for item in data}
 
 
-def validate() -> list[str]:
+def validate(pack: dict | None = None) -> list[str]:
     errors: list[str] = []
-    pack = load_json(ROOT / "policies" / "conditional-access-pack.json")
+    if pack is None:
+        pack = load_json(ROOT / "policies" / "conditional-access-pack.json")
     policies = pack.get("policies", [])
+    users = load_ids(ROOT / "sample-data" / "users.json")
     groups = load_ids(ROOT / "sample-data" / "groups.json")
     apps = load_ids(ROOT / "sample-data" / "apps.json")
     locations = load_ids(ROOT / "sample-data" / "named-locations.json")
@@ -53,6 +55,10 @@ def validate() -> list[str]:
 
         if "grp-break-glass" not in policy.get("excludedGroups", []):
             errors.append(f"{policy_id}: emergency access group must be excluded")
+
+        for user_id in policy.get("includedUsers", []) + policy.get("excludedUsers", []):
+            if user_id not in users and user_id != "all":
+                errors.append(f"{policy_id}: unknown user {user_id}")
 
         for group_id in policy.get("includedGroups", []) + policy.get("excludedGroups", []):
             if group_id not in groups and group_id != "all":
